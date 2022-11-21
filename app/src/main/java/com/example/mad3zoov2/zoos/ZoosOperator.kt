@@ -11,15 +11,35 @@ class ZoosOperator
 
     fun getZoosNames(): ArrayList<String>
     {
-        val tempListOfZooNames: ArrayList<String> = ArrayList()
-        for (i in 0 until listOfZoos.size)
+        val tempListOfZoosNames: ArrayList<String> = ArrayList()
+        for (i in listOfZoos)
         {
-            tempListOfZooNames.add(listOfZoos[i].name)
+            tempListOfZoosNames.add(i.name)
         }
-        return tempListOfZooNames
+        return tempListOfZoosNames
     }
 
-    fun getNumOfAnimalsInTheZoo(): ArrayList<Int>
+    fun getAviariesNames(indexOfZoo: Int): ArrayList<String>
+    {
+        val tempListOfAviariesNames: ArrayList<String> = ArrayList()
+        for (i in listOfZoos[indexOfZoo].listOfAviaries)
+        {
+            tempListOfAviariesNames.add(i.name)
+        }
+        return tempListOfAviariesNames
+    }
+
+    fun getAnimalsNames(indexOfZoo: Int, indexOfAviary: Int): ArrayList<String>
+    {
+        val tempListOfAnimalsNames:ArrayList<String> = ArrayList()
+        for (i in listOfZoos[indexOfZoo].listOfAviaries[indexOfAviary].listOfAnimals)
+        {
+            tempListOfAnimalsNames.add(i.name)
+        }
+        return tempListOfAnimalsNames
+    }
+
+    fun getNumOfAnimalsInTheZoos(): ArrayList<Int>
     {
         val tempArrayListOfNum: ArrayList<Int> = ArrayList()
         for (i in listOfZoos)
@@ -27,19 +47,21 @@ class ZoosOperator
             var num = 0
             for (j in i.listOfAviaries)
             {
-                for (k in j.listOfAnimals)
-                {
-                    num++
-                }
+                num += j.listOfAnimals.size
             }
             tempArrayListOfNum.add(num)
         }
         return tempArrayListOfNum
     }
 
-    fun getNumOfAnimalsInTheAviary(indexOfZoo: Int, indexOfAviary: Int): Int
+    fun getNumOfAnimalsInTheAviaries(indexOfZoo: Int): ArrayList<Int>
     {
-        return listOfZoos[indexOfZoo].listOfAviaries[indexOfAviary].listOfAnimals.size
+        val tempArrayListOfNum: ArrayList<Int> = ArrayList()
+        for (i in listOfZoos[indexOfZoo].listOfAviaries)
+        {
+            tempArrayListOfNum.add(i.listOfAnimals.size)
+        }
+        return tempArrayListOfNum
     }
 
     fun addAnimal(animal: Animal)

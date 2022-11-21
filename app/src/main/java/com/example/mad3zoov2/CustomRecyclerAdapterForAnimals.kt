@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomRecyclerAdapterForZoos(private val names: List<String>, private val num: List<Int>):
-    RecyclerView.Adapter<CustomRecyclerAdapterForZoos.MyViewHolder>()
+class CustomRecyclerAdapterForAnimals(private val names: List<String>):
+    RecyclerView.Adapter<CustomRecyclerAdapterForAnimals.MyViewHolder>()
 {
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {
         val textViewName: TextView = itemView.findViewById(R.id.textViewName)
-        val textViewNum: TextView = itemView.findViewById(R.id.textViewNum)
+        val textViewNumTitle: TextView = itemView.findViewById(R.id.textViewNumTitle)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder
@@ -25,7 +25,7 @@ class CustomRecyclerAdapterForZoos(private val names: List<String>, private val 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int)
     {
         holder.textViewName.text = names[position]
-        holder.textViewNum.text = num[position].toString()
+        holder.textViewNumTitle.visibility = View.INVISIBLE
     }
 
     override fun getItemCount() = names.size

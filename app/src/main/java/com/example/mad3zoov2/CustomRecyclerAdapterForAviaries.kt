@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomRecyclerAdapterForZoos(private val names: List<String>, private val num: List<Int>):
-    RecyclerView.Adapter<CustomRecyclerAdapterForZoos.MyViewHolder>()
+class CustomRecyclerAdapterForAviaries(private val names: List<String>, private val num: List<Int>):
+    RecyclerView.Adapter<CustomRecyclerAdapterForAviaries.MyViewHolder>()
 {
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {

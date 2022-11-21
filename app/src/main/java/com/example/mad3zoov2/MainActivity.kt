@@ -1,9 +1,8 @@
 package com.example.mad3zoov2
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mad3zoov2.zoos.Animal
@@ -12,6 +11,11 @@ import com.example.mad3zoov2.zoos.ZoosOperator
 class MainActivity : AppCompatActivity()
 {
     private val zo: ZoosOperator = ZoosOperator()
+
+    private var currentZooIndex: Int = -1
+    private var currentAviaryIndex: Int = -1
+
+    private var currentStage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -52,17 +56,46 @@ class MainActivity : AppCompatActivity()
             "Очень хитрая енотиха"
         ))
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = CustomRecyclerAdapterForZoos(zo.getZoosNames(), zo.getNumOfAnimalsInTheZoo())
+        val recyclerViewZoos: RecyclerView = findViewById(R.id.recyclerViewZoos)
+        recyclerViewZoos.layoutManager = LinearLayoutManager(this)
+        recyclerViewZoos.adapter = CustomRecyclerAdapterForZoos(zo.getZoosNames(), zo.getNumOfAnimalsInTheZoos())
 
-        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(
-            recyclerView,
+        val recyclerViewAviaries: RecyclerView = findViewById(R.id.recyclerViewAviaries)
+        recyclerViewAviaries.visibility = View.INVISIBLE
+        recyclerViewAviaries.layoutManager = LinearLayoutManager(this)
+
+        val recyclerViewAnimals: RecyclerView = findViewById(R.id.recyclerViewAnimals)
+        recyclerViewAnimals.visibility = View.INVISIBLE
+        recyclerViewAnimals.layoutManager = LinearLayoutManager(this)
+
+        recyclerViewZoos.addOnItemTouchListener(RecyclerItemClickListener(
+            recyclerViewZoos,
             object : RecyclerItemClickListener.OnItemClickListener
             {
                 override fun onItemClick(view: View, position: Int)
                 {
-                    Toast.makeText(applicationContext, "$position item clicked!", Toast.LENGTH_LONG).show()
+                    currentZooIndex = position
+                    currentStage = 1
+                    recyclerViewAviaries.adapter = CustomRecyclerAdapterForAviaries(
+                        zo.getAviariesNames(currentZooIndex),
+                        zo.getNumOfAnimalsInTheAviaries(currentZooIndex))
+                    recyclerViewZoos.visibility = View.INVISIBLE
+                    recyclerViewAviaries.visibility = View.VISIBLE
+
+                    recyclerViewAviaries.addOnItemTouchListener(RecyclerItemClickListener(
+                        recyclerViewAviaries,
+                        object : RecyclerItemClickListener.OnItemClickListener
+                        {
+                            override fun onItemClick(view: View, position: Int)
+                            {
+                                currentAviaryIndex = position
+                                currentStage = 2
+                                recyclerViewAnimals.adapter = CustomRecyclerAdapterForAnimals(
+                                    zo.getAnimalsNames(currentZooIndex, currentAviaryIndex))
+                                recyclerViewAviaries.visibility = View.INVISIBLE
+                                recyclerViewAnimals.visibility = View.VISIBLE
+                            }
+                        }))
                 }
             }))
     }

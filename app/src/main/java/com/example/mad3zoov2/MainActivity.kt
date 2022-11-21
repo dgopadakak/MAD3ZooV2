@@ -2,6 +2,8 @@ package com.example.mad3zoov2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mad3zoov2.zoos.Animal
@@ -53,5 +55,15 @@ class MainActivity : AppCompatActivity()
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = CustomRecyclerAdapterForZoos(zo.getZoosNames(), zo.getNumOfAnimalsInTheZoo())
+
+        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(
+            recyclerView,
+            object : RecyclerItemClickListener.OnItemClickListener
+            {
+                override fun onItemClick(view: View, position: Int)
+                {
+                    Toast.makeText(applicationContext, "$position item clicked!", Toast.LENGTH_LONG).show()
+                }
+            }))
     }
 }

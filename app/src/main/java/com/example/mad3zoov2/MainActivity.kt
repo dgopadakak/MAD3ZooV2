@@ -2,7 +2,9 @@ package com.example.mad3zoov2
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mad3zoov2.zoos.Animal
@@ -14,6 +16,7 @@ class MainActivity : AppCompatActivity()
 
     private var currentZooIndex: Int = -1
     private var currentAviaryIndex: Int = -1
+    private var currentAnimalIndex: Int = -1
 
     private var currentStage: Int = 0
 
@@ -68,6 +71,19 @@ class MainActivity : AppCompatActivity()
         recyclerViewAnimals.visibility = View.INVISIBLE
         recyclerViewAnimals.layoutManager = LinearLayoutManager(this)
 
+        val layoutAnimalInfo: ConstraintLayout = findViewById(R.id.layoutAnimalInfo)
+        layoutAnimalInfo.visibility = View.INVISIBLE
+
+        val textViewName: TextView = findViewById(R.id.textViewAnimalName)
+        val textViewAviary: TextView = findViewById(R.id.textViewAviary)
+        val textViewZoo: TextView = findViewById(R.id.textViewZoo)
+        val textViewAge: TextView = findViewById(R.id.textViewAge)
+        val textViewHeight: TextView = findViewById(R.id.textViewHeight)
+        val textViewWeight: TextView = findViewById(R.id.textViewWeight)
+        val textViewTailLength: TextView = findViewById(R.id.textViewTailLength)
+        val textViewSex: TextView = findViewById(R.id.textViewSex)
+        val textViewDescription: TextView = findViewById(R.id.textViewDescription)
+
         recyclerViewZoos.addOnItemTouchListener(RecyclerItemClickListener(
             recyclerViewZoos,
             object : RecyclerItemClickListener.OnItemClickListener
@@ -94,6 +110,37 @@ class MainActivity : AppCompatActivity()
                                     zo.getAnimalsNames(currentZooIndex, currentAviaryIndex))
                                 recyclerViewAviaries.visibility = View.INVISIBLE
                                 recyclerViewAnimals.visibility = View.VISIBLE
+
+                                recyclerViewAnimals.addOnItemTouchListener(RecyclerItemClickListener(
+                                    recyclerViewAnimals,
+                                    object : RecyclerItemClickListener.OnItemClickListener
+                                    {
+                                        override fun onItemClick(view: View, position: Int)
+                                        {
+                                            currentAnimalIndex = position
+                                            currentStage = 3
+                                            val tempAnimal: Animal = zo.getAnimal(currentZooIndex,
+                                                currentAviaryIndex, currentAnimalIndex)
+                                            textViewName.text = tempAnimal.name
+                                            textViewAviary.text = tempAnimal.aviary
+                                            textViewZoo.text = tempAnimal.zoo
+                                            textViewAge.text = tempAnimal.age.toString()
+                                            textViewHeight.text = tempAnimal.height.toString()
+                                            textViewWeight.text = tempAnimal.weight.toString()
+                                            textViewTailLength.text = tempAnimal.tailLength.toString()
+                                            if (tempAnimal.sex)
+                                            {
+                                                textViewSex.text = "Самец"
+                                            }
+                                            else
+                                            {
+                                                textViewSex.text = "Самка"
+                                            }
+                                            textViewDescription.text = tempAnimal.description
+                                            recyclerViewAnimals.visibility = View.INVISIBLE
+                                            layoutAnimalInfo.visibility = View.VISIBLE
+                                        }
+                                    }))
                             }
                         }))
                 }

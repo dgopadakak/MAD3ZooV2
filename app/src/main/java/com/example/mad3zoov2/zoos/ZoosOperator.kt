@@ -4,11 +4,6 @@ class ZoosOperator
 {
     private var listOfZoos: ArrayList<Zoo> = ArrayList()
 
-    fun getZoos(): ArrayList<Zoo>
-    {
-        return listOfZoos
-    }
-
     fun getZoosNames(): ArrayList<String>
     {
         val tempListOfZoosNames: ArrayList<String> = ArrayList()
@@ -62,6 +57,11 @@ class ZoosOperator
             tempArrayListOfNum.add(i.listOfAnimals.size)
         }
         return tempArrayListOfNum
+    }
+
+    fun getAnimal(indexOfZoo: Int, indexOfAviary: Int, indexOfAnimal: Int): Animal
+    {
+        return listOfZoos[indexOfZoo].listOfAviaries[indexOfAviary].listOfAnimals[indexOfAnimal]
     }
 
     fun addAnimal(animal: Animal)

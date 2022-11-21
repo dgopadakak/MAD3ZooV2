@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MAD3ZooV2</string>
     <string name="num">Количество животных:</string>
+    <string name="edit">Изменить</string>
+    <string name="del">Удалить</string>
+    <string name="back">Назад</string>
 </resources>

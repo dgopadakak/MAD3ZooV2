@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -146,30 +145,25 @@ class MainActivity : AppCompatActivity()
         refresh()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu):Boolean {
+    override fun onCreateOptionsMenu(menu: Menu):Boolean
+    {
         val inflater = menuInflater
         inflater.inflate(R.menu.mainmenu, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem):Boolean {
+    override fun onOptionsItemSelected(item: MenuItem):Boolean
+    {
         val id = item.itemId
         if (id == R.id.actionPlus)
         {
-            val toast = Toast.makeText(
-                applicationContext,
-                "Плюс!",
-                Toast.LENGTH_SHORT
-            )
-            toast.show()
+            buttonsAddOrEditListener(1)
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun buttonsAddOrEditListener(action: Int)
     {
-        val tempAnimal: Animal = zo.getAnimal(currentZooIndex,
-            currentAviaryIndex, currentAnimalIndex)
         val intent = Intent()
         intent.setClass(this, EditActivity::class.java)
         intent.putExtra("ACTION", action)
@@ -178,6 +172,8 @@ class MainActivity : AppCompatActivity()
         intent.putExtra("INDEX", currentAnimalIndex)
         if (action == 2)
         {
+            val tempAnimal: Animal = zo.getAnimal(currentZooIndex,
+                currentAviaryIndex, currentAnimalIndex)
             intent.putExtra("NAME", tempAnimal.name)
             intent.putExtra("AVIARY", tempAnimal.aviary)
             intent.putExtra("ZOO", tempAnimal.zoo)
@@ -203,6 +199,11 @@ class MainActivity : AppCompatActivity()
             currentStage--
             refresh()
         }
+    }
+
+    override fun onBackPressed()
+    {
+        buttonBackListener()
     }
 
     private fun refresh()

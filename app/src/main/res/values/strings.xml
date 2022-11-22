@@ -4,4 +4,13 @@
     <string name="edit">Изменить</string>
     <string name="del">Удалить</string>
     <string name="back">Назад</string>
+    <string name="name">Кличка:</string>
+    <string name="aviary">Вольер:</string>
+    <string name="zoo">Зоопарк:</string>
+    <string name="age">Возраст (лет):</string>
+    <string name="height">Высота (см):</string>
+    <string name="weight">Масса (кг):</string>
+    <string name="tailLength">Длина хвоста (см):</string>
+    <string name="sex">Пол:</string>
+    <string name="description">Описание:</string>
 </resources>

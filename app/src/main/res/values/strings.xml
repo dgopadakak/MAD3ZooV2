@@ -25,4 +25,6 @@
     <string name="sexW">Самка</string>
     <string name="confirmChangesButton">Подтвердить</string>
     <string name="plus">➕</string>
+    <string name="delAviary">Удалить вольер</string>
+    <string name="delZoo">Удалить зоопарк</string>
 </resources>

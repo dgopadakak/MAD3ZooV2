@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mad3zoov2.zoos.Animal
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity()
     private var currentAnimalIndex: Int = -1
 
     private var currentStage: Int = 0
+    private var currentDelAction: Int = 0
 
     private lateinit var recyclerViewZoos: RecyclerView
     private lateinit var recyclerViewAviaries: RecyclerView
@@ -103,8 +105,10 @@ class MainActivity : AppCompatActivity()
         textViewDescription = findViewById(R.id.textViewDescription)
 
         findViewById<Button>(R.id.buttonEdit).setOnClickListener { buttonsAddOrEditListener(2) }
-        findViewById<Button>(R.id.buttonDel).setOnClickListener { buttonDelListener() }
+        findViewById<Button>(R.id.buttonDel).setOnClickListener { preparingBeforeDel(1) }
         findViewById<Button>(R.id.buttonBack).setOnClickListener { buttonBackListener() }
+        findViewById<Button>(R.id.buttonDelAviary).setOnClickListener { preparingBeforeDel(2) }
+        findViewById<Button>(R.id.buttonDelZoo).setOnClickListener { preparingBeforeDel(3) }
 
         recyclerViewZoos.addOnItemTouchListener(RecyclerItemClickListener(
             recyclerViewZoos,
@@ -187,9 +191,17 @@ class MainActivity : AppCompatActivity()
         startActivityForResult(intent, 1)
     }
 
-    private fun buttonDelListener()
+    private fun preparingBeforeDel(action: Int)
     {
-        if (currentStage == 3)
+        currentDelAction = action
+        val manager: FragmentManager = supportFragmentManager
+        val myDialogFragment = MyDialogFragment()
+        myDialogFragment.show(manager, "myDialog")
+    }
+
+    fun buttonDelListener()
+    {
+        if (/*currentStage == 3 &&*/ currentDelAction == 1)
         {
             var stageBack = 1
             if (zo.getNumOfAnimalsInTheAviaries(currentZooIndex)[currentAviaryIndex] == 1)
@@ -202,6 +214,23 @@ class MainActivity : AppCompatActivity()
             }
             zo.delAnimal(currentZooIndex, currentAviaryIndex, currentAnimalIndex)
             currentStage -= stageBack
+            refresh()
+        }
+        if (currentDelAction == 2)
+        {
+            var stageBack = 2
+            if (zo.getNumOfAnimalsInTheZoos().size == 1)
+            {
+                stageBack++
+            }
+            zo.delAviary(currentZooIndex, currentAviaryIndex)
+            currentStage -= stageBack
+            refresh()
+        }
+        if (currentDelAction == 3)
+        {
+            zo.delZoo(currentZooIndex)
+            currentStage = 0
             refresh()
         }
     }

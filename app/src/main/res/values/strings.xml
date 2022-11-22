@@ -13,4 +13,15 @@
     <string name="tailLength">Длина хвоста (см):</string>
     <string name="sex">Пол:</string>
     <string name="description">Описание:</string>
+    <string name="editTextNameHint">Введите кличку</string>
+    <string name="editTextAviaryHint">Введите вольер</string>
+    <string name="editTextZooHint">Введите зоопарк</string>
+    <string name="editTextAgeHint">Введите возаст (лет)</string>
+    <string name="editTextHeightHint">Введите высоту (см)</string>
+    <string name="editTextWeightHint">Введсте массу (кг)</string>
+    <string name="editTextTailLength">Введите длину хвоста (см)</string>
+    <string name="editTextDescriptionHint">Введите описание</string>
+    <string name="sexM">Самец</string>
+    <string name="sexW">Самка</string>
+    <string name="confirmChangesButton">Подтвердить</string>
 </resources>

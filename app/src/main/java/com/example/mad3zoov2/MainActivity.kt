@@ -189,7 +189,21 @@ class MainActivity : AppCompatActivity()
 
     private fun buttonDelListener()
     {
-
+        if (currentStage == 3)
+        {
+            var stageBack = 1
+            if (zo.getNumOfAnimalsInTheAviaries(currentZooIndex)[currentAviaryIndex] == 1)
+            {
+                stageBack++
+                if (zo.getNumOfAnimalsInTheZoos()[currentZooIndex] == 1)
+                {
+                    stageBack++
+                }
+            }
+            zo.delAnimal(currentZooIndex, currentAviaryIndex, currentAnimalIndex)
+            currentStage -= stageBack
+            refresh()
+        }
     }
 
     private fun buttonBackListener()
@@ -301,7 +315,21 @@ class MainActivity : AppCompatActivity()
             }
             else
             {
-                zo.editAnimal(indexZ, indexA, index, tempAnimal)
+                val tempArrayList: ArrayList<Boolean> = zo.editAnimal(indexZ, indexA, index, tempAnimal)
+                if(!tempArrayList[0])
+                {
+                    var stageBack = 1
+                    if (zo.getNumOfAnimalsInTheAviaries(currentZooIndex)[currentAviaryIndex] == 1)
+                    {
+                        stageBack++
+                        if (zo.getNumOfAnimalsInTheZoos()[currentZooIndex] == 1
+                            && !tempArrayList[1])
+                        {
+                            stageBack++
+                        }
+                    }
+                    currentStage -= stageBack
+                }
                 refresh()
             }
         }

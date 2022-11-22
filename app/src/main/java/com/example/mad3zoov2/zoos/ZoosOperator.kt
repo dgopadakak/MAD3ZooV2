@@ -126,20 +126,35 @@ class ZoosOperator
         listOfZoos.removeAt(indexOfZoo)
     }
 
-    fun editAnimal(indexOfZoo: Int, indexOfAviary: Int, indexOfAnimal: Int, animal: Animal): Boolean
+    fun editAnimal(indexOfZoo: Int, indexOfAviary: Int, indexOfAnimal: Int, animal: Animal): ArrayList<Boolean>
     {
-        return if (listOfZoos[indexOfZoo].name == animal.zoo
+        val listForReturn: ArrayList<Boolean> = ArrayList()
+        if (listOfZoos[indexOfZoo].name == animal.zoo
             && listOfZoos[indexOfZoo].listOfAviaries[indexOfAviary].name == animal.aviary)
         {
             listOfZoos[indexOfZoo].listOfAviaries[indexOfAviary].listOfAnimals[indexOfAnimal] = animal
-            true
+            listForReturn.add(true)
         }
         else
         {
-            this.delAnimal(indexOfZoo, indexOfAviary, indexOfAnimal)
+            listForReturn.add(false)
+            if (listOfZoos[indexOfZoo].name != animal.zoo)
+            {
+                listForReturn.add(false)
+                this.delAnimal(indexOfZoo, indexOfAviary, indexOfAnimal)
+            }
+            else
+            {
+                listForReturn.add(true)
+                listOfZoos[indexOfZoo].listOfAviaries[indexOfAviary].listOfAnimals.removeAt(indexOfAnimal)
+                if (listOfZoos[indexOfZoo].listOfAviaries[indexOfAviary].listOfAnimals.isEmpty())
+                {
+                    listOfZoos[indexOfZoo].listOfAviaries.removeAt(indexOfAviary)
+                }
+            }
             this.addAnimal(animal)
-            false
         }
+        return listForReturn
     }
 
     fun editAviary(indexOfZoo: Int, indexOfAviary: Int, name: String)

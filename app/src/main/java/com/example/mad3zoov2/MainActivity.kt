@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity()
 
         recyclerViewZoos = findViewById(R.id.recyclerViewZoos)
         recyclerViewZoos.layoutManager = LinearLayoutManager(this)
-        recyclerViewZoos.adapter = CustomRecyclerAdapterForZoos(zo.getZoosNames(), zo.getNumOfAnimalsInTheZoos())
 
         recyclerViewAviaries = findViewById(R.id.recyclerViewAviaries)
         recyclerViewAviaries.visibility = View.INVISIBLE
@@ -103,11 +102,7 @@ class MainActivity : AppCompatActivity()
                 {
                     currentZooIndex = position
                     currentStage = 1
-                    recyclerViewAviaries.adapter = CustomRecyclerAdapterForAviaries(
-                        zo.getAviariesNames(currentZooIndex),
-                        zo.getNumOfAnimalsInTheAviaries(currentZooIndex))
-                    recyclerViewZoos.visibility = View.INVISIBLE
-                    recyclerViewAviaries.visibility = View.VISIBLE
+                    refresh()
                 }
             }))
 
@@ -119,10 +114,7 @@ class MainActivity : AppCompatActivity()
                 {
                     currentAviaryIndex = position
                     currentStage = 2
-                    recyclerViewAnimals.adapter = CustomRecyclerAdapterForAnimals(
-                        zo.getAnimalsNames(currentZooIndex, currentAviaryIndex))
-                    recyclerViewAviaries.visibility = View.INVISIBLE
-                    recyclerViewAnimals.visibility = View.VISIBLE
+                    refresh()
                 }
             }))
 
@@ -156,6 +148,8 @@ class MainActivity : AppCompatActivity()
                     layoutAnimalInfo.visibility = View.VISIBLE
                 }
             }))
+
+        refresh()
     }
 
     private fun buttonsAddOrEditListener(action: Int)
@@ -197,6 +191,7 @@ class MainActivity : AppCompatActivity()
     {
         if (currentStage == 0)
         {
+            recyclerViewZoos.adapter = CustomRecyclerAdapterForZoos(zo.getZoosNames(), zo.getNumOfAnimalsInTheZoos())
             recyclerViewZoos.visibility = View.VISIBLE
             recyclerViewAviaries.visibility = View.INVISIBLE
             recyclerViewAnimals.visibility = View.INVISIBLE
@@ -204,10 +199,26 @@ class MainActivity : AppCompatActivity()
         }
         if (currentStage == 1)
         {
+            recyclerViewAviaries.adapter = CustomRecyclerAdapterForAviaries(
+                zo.getAviariesNames(currentZooIndex),
+                zo.getNumOfAnimalsInTheAviaries(currentZooIndex))
             recyclerViewZoos.visibility = View.INVISIBLE
             recyclerViewAviaries.visibility = View.VISIBLE
             recyclerViewAnimals.visibility = View.INVISIBLE
             layoutAnimalInfo.visibility = View.INVISIBLE
+        }
+        if (currentStage == 2)
+        {
+            recyclerViewAnimals.adapter = CustomRecyclerAdapterForAnimals(
+                zo.getAnimalsNames(currentZooIndex, currentAviaryIndex))
+            recyclerViewZoos.visibility = View.INVISIBLE
+            recyclerViewAviaries.visibility = View.INVISIBLE
+            recyclerViewAnimals.visibility = View.VISIBLE
+            layoutAnimalInfo.visibility = View.INVISIBLE
+        }
+        if (currentStage == 3)
+        {
+
         }
     }
 

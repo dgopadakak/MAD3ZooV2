@@ -27,6 +27,8 @@ class EditActivity : AppCompatActivity()
         setContentView(R.layout.activity_edit)
 
         val action = intent.getSerializableExtra("ACTION") as Int
+        val indexA = intent.getSerializableExtra("INDEXA") as Int
+        val indexZ = intent.getSerializableExtra("INDEXZ") as Int
         val index = intent.getSerializableExtra("INDEX") as Int
 
         editTextName = findViewById(R.id.editText1)
@@ -40,17 +42,18 @@ class EditActivity : AppCompatActivity()
         radioButtonSexW = findViewById(R.id.radioButtonSexW)
         editTextDescription = findViewById(R.id.editText8)
 
-        findViewById<Button>(R.id.buttonConfirmChanges).setOnClickListener { confirmChanges(action, index) }
+        findViewById<Button>(R.id.buttonConfirmChanges).setOnClickListener { confirmChanges(action,
+            indexA, indexZ, index) }
 
         if (action == 2)
         {
             editTextName.setText(intent.getSerializableExtra("NAME") as String)
             editTextAviary.setText(intent.getSerializableExtra("AVIARY") as String)
             editTextZoo.setText(intent.getSerializableExtra("ZOO") as String)
-            editTextAge.setText(intent.getSerializableExtra("AGE") as String)
-            editTextHeight.setText(intent.getSerializableExtra("HEIGHT") as String)
-            editTextWeight.setText(intent.getSerializableExtra("WEIGHT") as String)
-            editTextTailLength.setText(intent.getSerializableExtra("TAIL") as String)
+            editTextAge.setText((intent.getSerializableExtra("AGE") as Int).toString())
+            editTextHeight.setText((intent.getSerializableExtra("HEIGHT") as Double).toString())
+            editTextWeight.setText((intent.getSerializableExtra("WEIGHT") as Double).toString())
+            editTextTailLength.setText((intent.getSerializableExtra("TAIL") as Double).toString())
             if (intent.getSerializableExtra("SEX") as Boolean)
             {
                 radioButtonSexM.isChecked = true
@@ -63,7 +66,7 @@ class EditActivity : AppCompatActivity()
         }
     }
 
-    private fun confirmChanges(action: Int, index: Int)
+    private fun confirmChanges(action: Int, indexA: Int, indexZ: Int, index: Int)
     {
         if (editTextName.text.toString() != "" && editTextAviary.text.toString() != ""
             && editTextAge.text.toString() != "" && editTextHeight.text.toString() != ""
@@ -74,6 +77,8 @@ class EditActivity : AppCompatActivity()
             {
                 val intent = Intent(this@EditActivity, MainActivity::class.java)
                 intent.putExtra("ACTION", action)
+                intent.putExtra("INDEXA", indexA)
+                intent.putExtra("INDEXZ", indexZ)
                 intent.putExtra("INDEX", index)
                 intent.putExtra("NAME", editTextName.text.toString().trim())
                 intent.putExtra("AVIARY", editTextAviary.text.toString().trim())
@@ -91,6 +96,8 @@ class EditActivity : AppCompatActivity()
                     intent.putExtra("SEX", false)
                 }
                 intent.putExtra("DESC", editTextDescription.text.toString().trim())
+                setResult(RESULT_OK, intent)
+                finish()
             }
             else
             {

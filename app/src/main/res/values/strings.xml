@@ -24,4 +24,5 @@
     <string name="sexM">Самец</string>
     <string name="sexW">Самка</string>
     <string name="confirmChangesButton">Подтвердить</string>
+    <string name="plus">➕</string>
 </resources>

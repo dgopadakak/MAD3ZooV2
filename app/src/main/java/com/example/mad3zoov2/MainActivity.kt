@@ -2,9 +2,12 @@ package com.example.mad3zoov2
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +29,16 @@ class MainActivity : AppCompatActivity()
     private lateinit var recyclerViewAviaries: RecyclerView
     private lateinit var recyclerViewAnimals: RecyclerView
     private lateinit var layoutAnimalInfo: ConstraintLayout
+
+    private lateinit var textViewName: TextView
+    private lateinit var textViewAviary: TextView
+    private lateinit var textViewZoo: TextView
+    private lateinit var textViewAge: TextView
+    private lateinit var textViewHeight: TextView
+    private lateinit var textViewWeight: TextView
+    private lateinit var textViewTailLength: TextView
+    private lateinit var textViewSex: TextView
+    private lateinit var textViewDescription: TextView
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -80,15 +93,15 @@ class MainActivity : AppCompatActivity()
         layoutAnimalInfo = findViewById(R.id.layoutAnimalInfo)
         layoutAnimalInfo.visibility = View.INVISIBLE
 
-        val textViewName: TextView = findViewById(R.id.textViewAnimalName)
-        val textViewAviary: TextView = findViewById(R.id.textViewAviary)
-        val textViewZoo: TextView = findViewById(R.id.textViewZoo)
-        val textViewAge: TextView = findViewById(R.id.textViewAge)
-        val textViewHeight: TextView = findViewById(R.id.textViewHeight)
-        val textViewWeight: TextView = findViewById(R.id.textViewWeight)
-        val textViewTailLength: TextView = findViewById(R.id.textViewTailLength)
-        val textViewSex: TextView = findViewById(R.id.textViewSex)
-        val textViewDescription: TextView = findViewById(R.id.textViewDescription)
+        textViewName = findViewById(R.id.textViewAnimalName)
+        textViewAviary = findViewById(R.id.textViewAviary)
+        textViewZoo = findViewById(R.id.textViewZoo)
+        textViewAge = findViewById(R.id.textViewAge)
+        textViewHeight = findViewById(R.id.textViewHeight)
+        textViewWeight = findViewById(R.id.textViewWeight)
+        textViewTailLength = findViewById(R.id.textViewTailLength)
+        textViewSex = findViewById(R.id.textViewSex)
+        textViewDescription = findViewById(R.id.textViewDescription)
 
         findViewById<Button>(R.id.buttonEdit).setOnClickListener { buttonsAddOrEditListener(2) }
         findViewById<Button>(R.id.buttonDel).setOnClickListener { buttonDelListener() }
@@ -126,30 +139,31 @@ class MainActivity : AppCompatActivity()
                 {
                     currentAnimalIndex = position
                     currentStage = 3
-                    val tempAnimal: Animal = zo.getAnimal(currentZooIndex,
-                        currentAviaryIndex, currentAnimalIndex)
-                    textViewName.text = tempAnimal.name
-                    textViewAviary.text = tempAnimal.aviary
-                    textViewZoo.text = tempAnimal.zoo
-                    textViewAge.text = tempAnimal.age.toString()
-                    textViewHeight.text = tempAnimal.height.toString()
-                    textViewWeight.text = tempAnimal.weight.toString()
-                    textViewTailLength.text = tempAnimal.tailLength.toString()
-                    if (tempAnimal.sex)
-                    {
-                        textViewSex.text = "Самец"
-                    }
-                    else
-                    {
-                        textViewSex.text = "Самка"
-                    }
-                    textViewDescription.text = tempAnimal.description
-                    recyclerViewAnimals.visibility = View.INVISIBLE
-                    layoutAnimalInfo.visibility = View.VISIBLE
+                    refresh()
                 }
             }))
 
         refresh()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu):Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.mainmenu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem):Boolean {
+        val id = item.itemId
+        if (id == R.id.actionPlus)
+        {
+            val toast = Toast.makeText(
+                applicationContext,
+                "Плюс!",
+                Toast.LENGTH_SHORT
+            )
+            toast.show()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun buttonsAddOrEditListener(action: Int)
@@ -184,7 +198,11 @@ class MainActivity : AppCompatActivity()
 
     private fun buttonBackListener()
     {
-
+        if (currentStage > 0)
+        {
+            currentStage--
+            refresh()
+        }
     }
 
     private fun refresh()
@@ -218,7 +236,28 @@ class MainActivity : AppCompatActivity()
         }
         if (currentStage == 3)
         {
-
+            val tempAnimal: Animal = zo.getAnimal(currentZooIndex,
+                currentAviaryIndex, currentAnimalIndex)
+            textViewName.text = tempAnimal.name
+            textViewAviary.text = tempAnimal.aviary
+            textViewZoo.text = tempAnimal.zoo
+            textViewAge.text = tempAnimal.age.toString()
+            textViewHeight.text = tempAnimal.height.toString()
+            textViewWeight.text = tempAnimal.weight.toString()
+            textViewTailLength.text = tempAnimal.tailLength.toString()
+            if (tempAnimal.sex)
+            {
+                textViewSex.text = "Самец"
+            }
+            else
+            {
+                textViewSex.text = "Самка"
+            }
+            textViewDescription.text = tempAnimal.description
+            recyclerViewZoos.visibility = View.INVISIBLE
+            recyclerViewAviaries.visibility = View.INVISIBLE
+            recyclerViewAnimals.visibility = View.INVISIBLE
+            layoutAnimalInfo.visibility = View.VISIBLE
         }
     }
 

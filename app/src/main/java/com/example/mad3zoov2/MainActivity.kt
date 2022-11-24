@@ -120,6 +120,10 @@ class MainActivity : AppCompatActivity()
                     currentStage = 1
                     refresh()
                 }
+                override fun onItemLongClick(view: View, position: Int)
+                {
+
+                }
             }))
 
         recyclerViewAviaries.addOnItemTouchListener(RecyclerItemClickListener(
@@ -132,6 +136,10 @@ class MainActivity : AppCompatActivity()
                     currentStage = 2
                     refresh()
                 }
+                override fun onItemLongClick(view: View, position: Int)
+                {
+
+                }
             }))
 
         recyclerViewAnimals.addOnItemTouchListener(RecyclerItemClickListener(
@@ -143,6 +151,10 @@ class MainActivity : AppCompatActivity()
                     currentAnimalIndex = position
                     currentStage = 3
                     refresh()
+                }
+                override fun onItemLongClick(view: View, position: Int)
+                {
+
                 }
             }))
 

@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity()
     private var currentAviaryIndex: Int = -1
     private var currentAnimalIndex: Int = -1
 
+    private val highlightedItemsForCurrentRecyclerView: ArrayList<Int> = ArrayList()
+
     private var currentStage: Int = 0
     private var currentDelAction: Int = 0
 
@@ -116,13 +118,35 @@ class MainActivity : AppCompatActivity()
             {
                 override fun onItemClick(view: View, position: Int)
                 {
-                    currentZooIndex = position
-                    currentStage = 1
+                    if (highlightedItemsForCurrentRecyclerView.isEmpty())
+                    {
+                        currentZooIndex = position
+                        currentStage = 1
+                    }
+                    else
+                    {
+                        if (highlightedItemsForCurrentRecyclerView.contains(position))
+                        {
+                            highlightedItemsForCurrentRecyclerView.remove(position)
+                        }
+                        else
+                        {
+                            highlightedItemsForCurrentRecyclerView.add(position)
+                        }
+                    }
                     refresh()
                 }
                 override fun onItemLongClick(view: View, position: Int)
                 {
-
+                    if (highlightedItemsForCurrentRecyclerView.contains(position))
+                    {
+                        highlightedItemsForCurrentRecyclerView.remove(position)
+                    }
+                    else
+                    {
+                        highlightedItemsForCurrentRecyclerView.add(position)
+                    }
+                    refresh()
                 }
             }))
 
@@ -132,13 +156,35 @@ class MainActivity : AppCompatActivity()
             {
                 override fun onItemClick(view: View, position: Int)
                 {
-                    currentAviaryIndex = position
-                    currentStage = 2
+                    if (highlightedItemsForCurrentRecyclerView.isEmpty())
+                    {
+                        currentAviaryIndex = position
+                        currentStage = 2
+                    }
+                    else
+                    {
+                        if (highlightedItemsForCurrentRecyclerView.contains(position))
+                        {
+                            highlightedItemsForCurrentRecyclerView.remove(position)
+                        }
+                        else
+                        {
+                            highlightedItemsForCurrentRecyclerView.add(position)
+                        }
+                    }
                     refresh()
                 }
                 override fun onItemLongClick(view: View, position: Int)
                 {
-
+                    if (highlightedItemsForCurrentRecyclerView.contains(position))
+                    {
+                        highlightedItemsForCurrentRecyclerView.remove(position)
+                    }
+                    else
+                    {
+                        highlightedItemsForCurrentRecyclerView.add(position)
+                    }
+                    refresh()
                 }
             }))
 
@@ -148,13 +194,36 @@ class MainActivity : AppCompatActivity()
             {
                 override fun onItemClick(view: View, position: Int)
                 {
-                    currentAnimalIndex = position
-                    currentStage = 3
+                    if (highlightedItemsForCurrentRecyclerView.isEmpty())
+                    {
+                        currentAnimalIndex = position
+                        currentStage = 3
+                        refresh()
+                    }
+                    else
+                    {
+                        if (highlightedItemsForCurrentRecyclerView.contains(position))
+                        {
+                            highlightedItemsForCurrentRecyclerView.remove(position)
+                        }
+                        else
+                        {
+                            highlightedItemsForCurrentRecyclerView.add(position)
+                        }
+                    }
                     refresh()
                 }
                 override fun onItemLongClick(view: View, position: Int)
                 {
-
+                    if (highlightedItemsForCurrentRecyclerView.contains(position))
+                    {
+                        highlightedItemsForCurrentRecyclerView.remove(position)
+                    }
+                    else
+                    {
+                        highlightedItemsForCurrentRecyclerView.add(position)
+                    }
+                    refresh()
                 }
             }))
 
@@ -249,7 +318,12 @@ class MainActivity : AppCompatActivity()
 
     private fun buttonBackListener()
     {
-        if (currentStage > 0)
+        if (highlightedItemsForCurrentRecyclerView.isNotEmpty())
+        {
+            highlightedItemsForCurrentRecyclerView.clear()
+            refresh()
+        }
+        else if (currentStage > 0)
         {
             currentStage--
             refresh()
@@ -265,7 +339,8 @@ class MainActivity : AppCompatActivity()
     {
         if (currentStage == 0)
         {
-            recyclerViewZoos.adapter = CustomRecyclerAdapterForZoos(zo.getZoosNames(), zo.getNumOfAnimalsInTheZoos())
+            recyclerViewZoos.adapter = CustomRecyclerAdapterForZoos(zo.getZoosNames(),
+                zo.getNumOfAnimalsInTheZoos(), highlightedItemsForCurrentRecyclerView)
             recyclerViewZoos.visibility = View.VISIBLE
             recyclerViewAviaries.visibility = View.INVISIBLE
             recyclerViewAnimals.visibility = View.INVISIBLE
@@ -275,7 +350,8 @@ class MainActivity : AppCompatActivity()
         {
             recyclerViewAviaries.adapter = CustomRecyclerAdapterForAviaries(
                 zo.getAviariesNames(currentZooIndex),
-                zo.getNumOfAnimalsInTheAviaries(currentZooIndex))
+                zo.getNumOfAnimalsInTheAviaries(currentZooIndex),
+                highlightedItemsForCurrentRecyclerView)
             recyclerViewZoos.visibility = View.INVISIBLE
             recyclerViewAviaries.visibility = View.VISIBLE
             recyclerViewAnimals.visibility = View.INVISIBLE
@@ -284,7 +360,8 @@ class MainActivity : AppCompatActivity()
         if (currentStage == 2)
         {
             recyclerViewAnimals.adapter = CustomRecyclerAdapterForAnimals(
-                zo.getAnimalsNames(currentZooIndex, currentAviaryIndex))
+                zo.getAnimalsNames(currentZooIndex, currentAviaryIndex),
+                highlightedItemsForCurrentRecyclerView)
             recyclerViewZoos.visibility = View.INVISIBLE
             recyclerViewAviaries.visibility = View.INVISIBLE
             recyclerViewAnimals.visibility = View.VISIBLE

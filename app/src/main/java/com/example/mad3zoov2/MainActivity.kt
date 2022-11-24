@@ -323,55 +323,65 @@ class MainActivity : AppCompatActivity()
         if (resultCode == RESULT_OK)
         {
             var action = data?.getSerializableExtra("ACTION")
-            var indexA = data?.getSerializableExtra("INDEXA")
-            var indexZ = data?.getSerializableExtra("INDEXZ")
-            var index = data?.getSerializableExtra("INDEX")
-            var name = data?.getSerializableExtra("NAME")
-            var aviary = data?.getSerializableExtra("AVIARY")
-            var zoo = data?.getSerializableExtra("ZOO")
-            var age = data?.getSerializableExtra("AGE")
-            var height = data?.getSerializableExtra("HEIGHT")
-            var weight = data?.getSerializableExtra("WEIGHT")
-            var tailLength = data?.getSerializableExtra("TAIL")
-            var sex = data?.getSerializableExtra("SEX")
-            var description = data?.getSerializableExtra("DESC")
             action = action as Int
-            indexA = indexA as Int
-            indexZ = indexZ as Int
-            index = index as Int
-            name = name as String
-            aviary = aviary as String
-            zoo = zoo as String
-            age = age as Int
-            height = height as Double
-            weight = weight as Double
-            tailLength = tailLength as Double
-            sex = sex as Boolean
-            description = description as String
-            val tempAnimal = Animal(name, aviary, zoo, age, height, weight, tailLength, sex, description)
-            if (action == 1)
+            if (action == 1 || action == 2)
             {
-                zo.addAnimal(tempAnimal)
-                refresh()
-            }
-            else
-            {
-                val tempArrayList: ArrayList<Boolean> = zo.editAnimal(indexZ, indexA, index, tempAnimal)
-                if(!tempArrayList[0])
+                var indexA = data?.getSerializableExtra("INDEXA")
+                var indexZ = data?.getSerializableExtra("INDEXZ")
+                var index = data?.getSerializableExtra("INDEX")
+                var name = data?.getSerializableExtra("NAME")
+                var aviary = data?.getSerializableExtra("AVIARY")
+                var zoo = data?.getSerializableExtra("ZOO")
+                var age = data?.getSerializableExtra("AGE")
+                var height = data?.getSerializableExtra("HEIGHT")
+                var weight = data?.getSerializableExtra("WEIGHT")
+                var tailLength = data?.getSerializableExtra("TAIL")
+                var sex = data?.getSerializableExtra("SEX")
+                var description = data?.getSerializableExtra("DESC")
+                indexA = indexA as Int
+                indexZ = indexZ as Int
+                index = index as Int
+                name = name as String
+                aviary = aviary as String
+                zoo = zoo as String
+                age = age as Int
+                height = height as Double
+                weight = weight as Double
+                tailLength = tailLength as Double
+                sex = sex as Boolean
+                description = description as String
+                val tempAnimal =
+                    Animal(name, aviary, zoo, age, height, weight, tailLength, sex, description)
+                if (action == 1)
                 {
-                    var stageBack = 1
-                    if (zo.getNumOfAnimalsInTheAviaries(currentZooIndex)[currentAviaryIndex] == 1)
+                    zo.addAnimal(tempAnimal)
+                    refresh()
+                }
+                else
+                {
+                    val tempArrayList: ArrayList<Boolean> =
+                        zo.editAnimal(indexZ, indexA, index, tempAnimal)
+                    if (!tempArrayList[0])
                     {
-                        stageBack++
-                        if (zo.getNumOfAnimalsInTheZoos()[currentZooIndex] == 1
-                            && !tempArrayList[1])
+                        var stageBack = 1
+                        if (zo.getNumOfAnimalsInTheAviaries(currentZooIndex)[currentAviaryIndex] == 1)
                         {
                             stageBack++
+                            if (zo.getNumOfAnimalsInTheZoos()[currentZooIndex] == 1
+                                && !tempArrayList[1]
+                            )
+                            {
+                                stageBack++
+                            }
                         }
+                        currentStage -= stageBack
                     }
-                    currentStage -= stageBack
+                    refresh()
                 }
-                refresh()
+            }
+            else if (action == 3)
+            {
+
             }
         }
     }

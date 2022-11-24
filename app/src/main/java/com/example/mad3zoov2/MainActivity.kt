@@ -244,6 +244,10 @@ class MainActivity : AppCompatActivity()
         {
             buttonsAddOrEditListener(1)
         }
+        else if (id == R.id.actionDel)
+        {
+            delManyAnimals()
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -272,6 +276,37 @@ class MainActivity : AppCompatActivity()
         startActivityForResult(intent, 1)
     }
 
+    private fun delManyAnimals()
+    {
+        currentDelAction = when (currentStage)
+        {
+            0 -> 3
+            1 -> 5
+            else -> 4
+        }
+        var iBack = 0
+        for (i in highlightedItemsForCurrentRecyclerView)
+        {
+            if (currentStage == 0)
+            {
+                currentZooIndex = i - iBack
+                iBack++
+            }
+            else if (currentStage == 1)
+            {
+                currentAviaryIndex = i - iBack
+                iBack++
+            }
+            else
+            {
+                currentAnimalIndex = i - iBack
+                iBack++
+            }
+            buttonDelListener()
+        }
+        highlightedItemsForCurrentRecyclerView.clear()
+    }
+
     private fun preparingBeforeDel(action: Int)
     {
         currentDelAction = action
@@ -282,9 +317,13 @@ class MainActivity : AppCompatActivity()
 
     fun buttonDelListener()
     {
-        if (/*currentStage == 3 &&*/ currentDelAction == 1)
+        if (currentDelAction == 1 || currentDelAction == 4)      // Удаление животного
         {
-            var stageBack = 1
+            var stageBack: Int = if (currentDelAction == 1) {
+                1
+            } else {
+                0
+            }
             if (zo.getNumOfAnimalsInTheAviaries(currentZooIndex)[currentAviaryIndex] == 1)
             {
                 stageBack++
@@ -297,10 +336,14 @@ class MainActivity : AppCompatActivity()
             currentStage -= stageBack
             refresh()
         }
-        if (currentDelAction == 2)
+        if (currentDelAction == 2 || currentDelAction == 5)      // Удаление вольера
         {
-            var stageBack = 2
-            if (zo.getNumOfAnimalsInTheZoos().size == 1)
+            var stageBack: Int = if (currentDelAction == 2) {
+                2
+            } else {
+                0
+            }
+            if (zo.getNumOfAnimalsInTheZoos()[currentZooIndex] == 1)
             {
                 stageBack++
             }
@@ -308,7 +351,7 @@ class MainActivity : AppCompatActivity()
             currentStage -= stageBack
             refresh()
         }
-        if (currentDelAction == 3)
+        if (currentDelAction == 3)      // Удаление зоопарка
         {
             zo.delZoo(currentZooIndex)
             currentStage = 0
@@ -459,6 +502,8 @@ class MainActivity : AppCompatActivity()
             else if (action == 3)
             {
 
+                highlightedItemsForCurrentRecyclerView.clear()
+                refresh()
             }
         }
     }

@@ -28,9 +28,6 @@ class MainActivity : AppCompatActivity()
     private var currentStage: Int = 0
     private var currentDelAction: Int = 0
 
-    private lateinit var delItem: MenuItem
-    private lateinit var editItem: MenuItem
-
     private lateinit var recyclerViewZoos: RecyclerView
     private lateinit var recyclerViewAviaries: RecyclerView
     private lateinit var recyclerViewAnimals: RecyclerView
@@ -237,8 +234,21 @@ class MainActivity : AppCompatActivity()
     {
         val inflater = menuInflater
         inflater.inflate(R.menu.mainmenu, menu)
-        delItem = menu.getItem(1)
-        editItem = menu.getItem(2)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean
+    {
+        if (highlightedItemsForCurrentRecyclerView.isEmpty())
+        {
+            menu.getItem(1).isEnabled = false
+            menu.getItem(2).isEnabled = false
+        }
+        else
+        {
+            menu.getItem(1).isEnabled = highlightedItemsForCurrentRecyclerView.size == 1
+            menu.getItem(2).isEnabled = true
+        }
         return true
     }
 
@@ -440,16 +450,7 @@ class MainActivity : AppCompatActivity()
             recyclerViewAnimals.visibility = View.INVISIBLE
             layoutAnimalInfo.visibility = View.VISIBLE
         }
-        if (highlightedItemsForCurrentRecyclerView.isEmpty())
-        {
-            delItem.isEnabled = false
-            editItem.isEnabled = false
-        }
-        else
-        {
-            delItem.isEnabled = true
-            editItem.isEnabled = highlightedItemsForCurrentRecyclerView.size == 1
-        }
+        invalidateOptionsMenu()
     }
 
     @Deprecated("Deprecated in Java")

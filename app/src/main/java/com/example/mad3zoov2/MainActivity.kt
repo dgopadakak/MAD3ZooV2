@@ -1,6 +1,8 @@
 package com.example.mad3zoov2
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -20,10 +22,23 @@ import com.example.mad3zoov2.forRecyclerViews.CustomRecyclerAdapterForZoos
 import com.example.mad3zoov2.forRecyclerViews.RecyclerItemClickListener
 import com.example.mad3zoov2.zoos.Animal
 import com.example.mad3zoov2.zoos.ZoosOperator
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+
 
 class MainActivity : AppCompatActivity()
 {
-    private val zo: ZoosOperator = ZoosOperator()
+    private var zo: ZoosOperator = ZoosOperator()
+
+    private val gsonBuilder = GsonBuilder()
+    private val gson: Gson = gsonBuilder.create()
+
+    private var zoJSON: String = ""
+
+    private val appPreferences = "mysettings"
+    private val APP_PREFERENCES_ZO = "zo"
+
+    private lateinit var mSettings: SharedPreferences
 
     private var currentZooIndex: Int = -1
     private var currentAviaryIndex: Int = -1
@@ -54,50 +69,53 @@ class MainActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        zo.addAnimal(Animal(
-            "Лео",
-            "Вольер №1",
-            "Сафари-парк",
-            7,
-            150.5,
-            61.3,
-            100.5,
-            true,
-            "Очень красивый лев"
-        ))
-        zo.addAnimal(Animal(
-            "Тигря",
-            "Вольер №2",
-            "Сафари-парк",
-            9,
-            130.5,
-            50.3,
-            110.5,
-            true,
-            "Очень красивый тигр"
-        ))
-        zo.addAnimal(Animal(
-            "Тигря2",
-            "Вольер №3",
-            "Сафари-парк",
-            9,
-            130.5,
-            50.3,
-            110.5,
-            true,
-            "Очень красивый тигр"
-        ))
-        zo.addAnimal(Animal(
-            "Хитруня",
-            "Вольер для енотов",
-            "Городской зоопарк",
-            3,
-            30.0,
-            11.8,
-            29.0,
-            false,
-            "Очень хитрая енотиха"
-        ))
+
+//        zo.addAnimal(Animal(
+//            "Лео",
+//            "Вольер №1",
+//            "Сафари-парк",
+//            7,
+//            150.5,
+//            61.3,
+//            100.5,
+//            true,
+//            "Очень красивый лев"
+//        ))
+//        zo.addAnimal(Animal(
+//            "Тигря",
+//            "Вольер №2",
+//            "Сафари-парк",
+//            9,
+//            130.5,
+//            50.3,
+//            110.5,
+//            true,
+//            "Очень красивый тигр"
+//        ))
+//        zo.addAnimal(Animal(
+//            "Тигря2",
+//            "Вольер №3",
+//            "Сафари-парк",
+//            9,
+//            130.5,
+//            50.3,
+//            110.5,
+//            true,
+//            "Очень красивый тигр"
+//        ))
+//        zo.addAnimal(Animal(
+//            "Хитруня",
+//            "Вольер для енотов",
+//            "Городской зоопарк",
+//            3,
+//            30.0,
+//            11.8,
+//            29.0,
+//            false,
+//            "Очень хитрая енотиха"
+//        ))
+
+        mSettings = getSharedPreferences(appPreferences, Context.MODE_PRIVATE)
 
         recyclerViewZoos = findViewById(R.id.recyclerViewZoos)
         recyclerViewZoos.layoutManager = LinearLayoutManager(this)
@@ -249,6 +267,12 @@ class MainActivity : AppCompatActivity()
                 }
             })
         )
+
+        if (mSettings.contains(APP_PREFERENCES_ZO))
+        {
+            zoJSON = mSettings.getString(APP_PREFERENCES_ZO, "").toString()
+            zo = gson.fromJson(zoJSON, ZoosOperator::class.java)
+        }
 
         refresh()
     }
@@ -548,6 +572,11 @@ class MainActivity : AppCompatActivity()
             layoutAnimalInfo.visibility = View.VISIBLE
         }
         invalidateOptionsMenu()
+
+        zoJSON = gson.toJson(zo)
+        val editor: SharedPreferences.Editor = mSettings.edit()
+        editor.putString(APP_PREFERENCES_ZO, zoJSON)
+        editor.apply()
     }
 
     @Deprecated("Deprecated in Java")

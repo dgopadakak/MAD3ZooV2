@@ -12,6 +12,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mad3zoov2.dialogFragments.MyDialogFragmentDelMany
+import com.example.mad3zoov2.dialogFragments.MyDialogFragmentDelOne
 import com.example.mad3zoov2.forRecyclerViews.CustomRecyclerAdapterForAnimals
 import com.example.mad3zoov2.forRecyclerViews.CustomRecyclerAdapterForAviaries
 import com.example.mad3zoov2.forRecyclerViews.CustomRecyclerAdapterForZoos
@@ -66,6 +68,17 @@ class MainActivity : AppCompatActivity()
         zo.addAnimal(Animal(
             "Тигря",
             "Вольер №2",
+            "Сафари-парк",
+            9,
+            130.5,
+            50.3,
+            110.5,
+            true,
+            "Очень красивый тигр"
+        ))
+        zo.addAnimal(Animal(
+            "Тигря2",
+            "Вольер №3",
             "Сафари-парк",
             9,
             130.5,
@@ -319,6 +332,24 @@ class MainActivity : AppCompatActivity()
         var iBack = 0
         for (i in highlightedItemsForCurrentRecyclerView)
         {
+            /**
+            when (currentStage)
+            {
+                0 -> {
+                    currentZooIndex = i - iBack
+                    iBack++
+                }
+                1 -> {
+                    currentAviaryIndex = i - iBack
+                    iBack++
+                }
+                else -> {
+                    currentAnimalIndex = i - iBack
+                    iBack++
+                }
+            }
+            */
+
             if (currentStage == 0)
             {
                 currentZooIndex = i - iBack

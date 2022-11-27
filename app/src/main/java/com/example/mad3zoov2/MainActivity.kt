@@ -12,6 +12,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mad3zoov2.forRecyclerViews.CustomRecyclerAdapterForAnimals
+import com.example.mad3zoov2.forRecyclerViews.CustomRecyclerAdapterForAviaries
+import com.example.mad3zoov2.forRecyclerViews.CustomRecyclerAdapterForZoos
+import com.example.mad3zoov2.forRecyclerViews.RecyclerItemClickListener
 import com.example.mad3zoov2.zoos.Animal
 import com.example.mad3zoov2.zoos.ZoosOperator
 
@@ -112,7 +116,8 @@ class MainActivity : AppCompatActivity()
         findViewById<Button>(R.id.buttonDelAviary).setOnClickListener { preparingBeforeDel(2) }
         findViewById<Button>(R.id.buttonDelZoo).setOnClickListener { preparingBeforeDel(3) }
 
-        recyclerViewZoos.addOnItemTouchListener(RecyclerItemClickListener(
+        recyclerViewZoos.addOnItemTouchListener(
+            RecyclerItemClickListener(
             recyclerViewZoos,
             object : RecyclerItemClickListener.OnItemClickListener
             {
@@ -148,9 +153,11 @@ class MainActivity : AppCompatActivity()
                     }
                     refresh()
                 }
-            }))
+            })
+        )
 
-        recyclerViewAviaries.addOnItemTouchListener(RecyclerItemClickListener(
+        recyclerViewAviaries.addOnItemTouchListener(
+            RecyclerItemClickListener(
             recyclerViewAviaries,
             object : RecyclerItemClickListener.OnItemClickListener
             {
@@ -186,9 +193,11 @@ class MainActivity : AppCompatActivity()
                     }
                     refresh()
                 }
-            }))
+            })
+        )
 
-        recyclerViewAnimals.addOnItemTouchListener(RecyclerItemClickListener(
+        recyclerViewAnimals.addOnItemTouchListener(
+            RecyclerItemClickListener(
             recyclerViewAnimals,
             object : RecyclerItemClickListener.OnItemClickListener
             {
@@ -225,7 +234,8 @@ class MainActivity : AppCompatActivity()
                     }
                     refresh()
                 }
-            }))
+            })
+        )
 
         refresh()
     }

@@ -1,4 +1,4 @@
-package com.example.mad3zoov2
+package com.example.mad3zoov2.forRecyclerViews
 
 import android.view.GestureDetector
 import android.view.MotionEvent

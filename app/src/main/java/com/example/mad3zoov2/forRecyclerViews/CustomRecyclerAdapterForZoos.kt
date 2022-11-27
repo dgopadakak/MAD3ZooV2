@@ -1,4 +1,4 @@
-package com.example.mad3zoov2
+package com.example.mad3zoov2.forRecyclerViews
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,16 +7,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mad3zoov2.R
 
-class CustomRecyclerAdapterForAnimals(private val names: List<String>,
-                                      private val highlighted: List<Int>):
-    RecyclerView.Adapter<CustomRecyclerAdapterForAnimals.MyViewHolder>()
+class CustomRecyclerAdapterForZoos(private val names: List<String>, private val num: List<Int>,
+                                   private val highlighted: List<Int>):
+    RecyclerView.Adapter<CustomRecyclerAdapterForZoos.MyViewHolder>()
 {
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {
         val layoutItem: ConstraintLayout = itemView.findViewById(R.id.layoutItem)
         val textViewName: TextView = itemView.findViewById(R.id.textViewName)
-        val textViewNumTitle: TextView = itemView.findViewById(R.id.textViewNumTitle)
+        val textViewNum: TextView = itemView.findViewById(R.id.textViewNum)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder
@@ -29,7 +30,7 @@ class CustomRecyclerAdapterForAnimals(private val names: List<String>,
     override fun onBindViewHolder(holder: MyViewHolder, position: Int)
     {
         holder.textViewName.text = names[position]
-        holder.textViewNumTitle.visibility = View.INVISIBLE
+        holder.textViewNum.text = num[position].toString()
         for (i in highlighted)
         {
             if (position == i)

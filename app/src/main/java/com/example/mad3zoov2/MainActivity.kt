@@ -111,10 +111,10 @@ class MainActivity : AppCompatActivity()
         textViewDescription = findViewById(R.id.textViewDescription)
 
         findViewById<Button>(R.id.buttonEdit).setOnClickListener { buttonsAddOrEditListener(2) }
-        findViewById<Button>(R.id.buttonDel).setOnClickListener { preparingBeforeDel(1) }
+        findViewById<Button>(R.id.buttonDel).setOnClickListener { preparingBeforeDelOne(1) }
         findViewById<Button>(R.id.buttonBack).setOnClickListener { buttonBackListener() }
-        findViewById<Button>(R.id.buttonDelAviary).setOnClickListener { preparingBeforeDel(2) }
-        findViewById<Button>(R.id.buttonDelZoo).setOnClickListener { preparingBeforeDel(3) }
+        findViewById<Button>(R.id.buttonDelAviary).setOnClickListener { preparingBeforeDelOne(2) }
+        findViewById<Button>(R.id.buttonDelZoo).setOnClickListener { preparingBeforeDelOne(3) }
 
         recyclerViewZoos.addOnItemTouchListener(
             RecyclerItemClickListener(
@@ -271,7 +271,7 @@ class MainActivity : AppCompatActivity()
         }
         else if (id == R.id.actionDel)
         {
-            delManyAnimals()
+            delManyAnimalsPreparing()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -301,7 +301,14 @@ class MainActivity : AppCompatActivity()
         startActivityForResult(intent, 1)
     }
 
-    private fun delManyAnimals()
+    private fun delManyAnimalsPreparing()
+    {
+        val manager: FragmentManager = supportFragmentManager
+        val myDialogFragmentDelMany = MyDialogFragmentDelMany()
+        myDialogFragmentDelMany.show(manager, "myDialog")
+    }
+
+    fun delManyAnimals()
     {
         currentDelAction = when (currentStage)
         {
@@ -332,12 +339,12 @@ class MainActivity : AppCompatActivity()
         highlightedItemsForCurrentRecyclerView.clear()
     }
 
-    private fun preparingBeforeDel(action: Int)
+    private fun preparingBeforeDelOne(action: Int)
     {
         currentDelAction = action
         val manager: FragmentManager = supportFragmentManager
-        val myDialogFragment = MyDialogFragment()
-        myDialogFragment.show(manager, "myDialog")
+        val myDialogFragmentDelOne = MyDialogFragmentDelOne()
+        myDialogFragmentDelOne.show(manager, "myDialog")
     }
 
     fun buttonDelListener()

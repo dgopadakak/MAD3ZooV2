@@ -27,4 +27,5 @@
     <string name="plus">➕</string>
     <string name="delAviary">Удалить вольер</string>
     <string name="delZoo">Удалить зоопарк</string>
+    <string name="itemName">Название:</string>
 </resources>

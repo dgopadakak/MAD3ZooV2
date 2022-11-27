@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity()
     private var zoJSON: String = ""
 
     private val appPreferences = "mysettings"
-    private val APP_PREFERENCES_ZO = "zo"
+    private val appPreferencesZo = "zo"
 
     private lateinit var mSettings: SharedPreferences
 
@@ -268,9 +268,9 @@ class MainActivity : AppCompatActivity()
             })
         )
 
-        if (mSettings.contains(APP_PREFERENCES_ZO))
+        if (mSettings.contains(appPreferencesZo))
         {
-            zoJSON = mSettings.getString(APP_PREFERENCES_ZO, "").toString()
+            zoJSON = mSettings.getString(appPreferencesZo, "").toString()
             zo = gson.fromJson(zoJSON, ZoosOperator::class.java)
         }
 
@@ -575,7 +575,7 @@ class MainActivity : AppCompatActivity()
 
         zoJSON = gson.toJson(zo)
         val editor: SharedPreferences.Editor = mSettings.edit()
-        editor.putString(APP_PREFERENCES_ZO, zoJSON)
+        editor.putString(appPreferencesZo, zoJSON)
         editor.apply()
     }
 

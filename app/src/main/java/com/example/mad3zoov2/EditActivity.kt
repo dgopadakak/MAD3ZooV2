@@ -45,7 +45,7 @@ class EditActivity : AppCompatActivity()
         findViewById<Button>(R.id.buttonConfirmChanges).setOnClickListener { confirmChanges(action,
             indexA, indexZ, index) }
 
-        if (action == 2)
+        if (action == 2 || action == 4)
         {
             editTextName.setText(intent.getSerializableExtra("NAME") as String)
             editTextAviary.setText(intent.getSerializableExtra("AVIARY") as String)

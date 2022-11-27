@@ -286,6 +286,55 @@ class MainActivity : AppCompatActivity()
         {
             delManyAnimalsPreparing()
         }
+        else if (id == R.id.actionEdit)
+        {
+            if (currentStage < 2)
+            {
+                val intent = Intent()
+                intent.setClass(this, EditActivityForItems::class.java)
+                intent.putExtra("STAGE", currentStage)
+                if (currentStage == 0)
+                {
+                    intent.putExtra("INDEXZ", highlightedItemsForCurrentRecyclerView[0])
+                    intent.putExtra("INDEX", -1)
+                }
+                else
+                {
+                    intent.putExtra("INDEXZ", currentZooIndex)
+                    intent.putExtra("INDEX", highlightedItemsForCurrentRecyclerView[0])
+                }
+                if (currentStage == 0)
+                {
+                    intent.putExtra("NAME", zo.getZoosNames()[highlightedItemsForCurrentRecyclerView[0]])
+                }
+                else
+                {
+                    intent.putExtra("NAME", zo.getAviariesNames(currentZooIndex)[highlightedItemsForCurrentRecyclerView[0]])
+                }
+                startActivityForResult(intent, 1)
+            }
+            else
+            {
+                val intent = Intent()
+                intent.setClass(this, EditActivity::class.java)
+                intent.putExtra("ACTION", 4)
+                intent.putExtra("INDEXA", currentAviaryIndex)
+                intent.putExtra("INDEXZ", currentZooIndex)
+                intent.putExtra("INDEX", highlightedItemsForCurrentRecyclerView[0])
+                val tempAnimal: Animal = zo.getAnimal(currentZooIndex,
+                    currentAviaryIndex, highlightedItemsForCurrentRecyclerView[0])
+                intent.putExtra("NAME", tempAnimal.name)
+                intent.putExtra("AVIARY", tempAnimal.aviary)
+                intent.putExtra("ZOO", tempAnimal.zoo)
+                intent.putExtra("AGE", tempAnimal.age)
+                intent.putExtra("HEIGHT", tempAnimal.height)
+                intent.putExtra("WEIGHT", tempAnimal.weight)
+                intent.putExtra("TAIL", tempAnimal.tailLength)
+                intent.putExtra("SEX", tempAnimal.sex)
+                intent.putExtra("DESC", tempAnimal.description)
+                startActivityForResult(intent, 1)
+            }
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -508,7 +557,7 @@ class MainActivity : AppCompatActivity()
         {
             var action = data?.getSerializableExtra("ACTION")
             action = action as Int
-            if (action == 1 || action == 2)
+            if (action == 1 || action == 2 || action == 4)
             {
                 var indexA = data?.getSerializableExtra("INDEXA")
                 var indexZ = data?.getSerializableExtra("INDEXZ")
@@ -543,29 +592,40 @@ class MainActivity : AppCompatActivity()
                 }
                 else
                 {
+                    val numOfAviaries = zo.getNumOfAnimalsInTheAviaries(currentZooIndex).size
+                    val numOfZoos = zo.getNumOfAnimalsInTheZoos().size
                     val tempArrayList: ArrayList<Boolean> =
                         zo.editAnimal(indexZ, indexA, index, tempAnimal)
                     if (!tempArrayList[0])
                     {
-                        var stageBack = 1
-                        if (zo.getNumOfAnimalsInTheAviaries(currentZooIndex)[currentAviaryIndex] == 1)
-                        {
-                            stageBack++
-                            if (zo.getNumOfAnimalsInTheZoos()[currentZooIndex] == 1
-                                && !tempArrayList[1]
-                            )
-                            {
-                                stageBack++
+                        currentStage = if (numOfZoos > zo.getNumOfAnimalsInTheZoos().size) {
+                            0
+                        } else {
+                            if (numOfAviaries > zo.getNumOfAnimalsInTheAviaries(currentZooIndex).size) {
+                                1
+                            } else {
+                                2
                             }
                         }
-                        currentStage -= stageBack
                     }
+                    highlightedItemsForCurrentRecyclerView.clear()
                     refresh()
                 }
             }
             else if (action == 3)
             {
-
+                val stage = data?.getSerializableExtra("STAGE") as Int
+                val indexZ = data.getSerializableExtra("INDEXZ") as Int
+                val index = data.getSerializableExtra("INDEX") as Int
+                val name = data.getSerializableExtra("NAME") as String
+                if (stage == 0)
+                {
+                    zo.editZoo(indexZ, name)
+                }
+                else
+                {
+                    zo.editAviary(indexZ, index, name)
+                }
                 highlightedItemsForCurrentRecyclerView.clear()
                 refresh()
             }
